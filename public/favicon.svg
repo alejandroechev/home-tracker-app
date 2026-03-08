@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2563eb"/>
+      <stop offset="100%" style="stop-color:#1d4ed8"/>
+    </linearGradient>
+  </defs>
+  <!-- Rounded background -->
+  <rect width="512" height="512" rx="96" fill="url(#bg)"/>
+  <!-- House roof -->
+  <path d="M256 100 L420 240 L390 240 L390 400 L122 400 L122 240 L92 240 Z" fill="white" opacity="0.95"/>
+  <!-- Door -->
+  <rect x="220" y="300" width="72" height="100" rx="8" fill="#2563eb"/>
+  <!-- Window left -->
+  <rect x="148" y="260" width="56" height="56" rx="6" fill="#2563eb" opacity="0.7"/>
+  <line x1="176" y1="260" x2="176" y2="316" stroke="white" stroke-width="3"/>
+  <line x1="148" y1="288" x2="204" y2="288" stroke="white" stroke-width="3"/>
+  <!-- Window right -->
+  <rect x="308" y="260" width="56" height="56" rx="6" fill="#2563eb" opacity="0.7"/>
+  <line x1="336" y1="260" x2="336" y2="316" stroke="white" stroke-width="3"/>
+  <line x1="308" y1="288" x2="364" y2="288" stroke="white" stroke-width="3"/>
+  <!-- Wrench icon (small, bottom-right corner) -->
+  <g transform="translate(350, 350) scale(0.55)" fill="white" opacity="0.9">
+    <path d="M140 20 C120 0 90 -5 65 10 L95 40 L85 65 L60 75 L30 45 C15 70 20 100 45 120 C65 137 95 140 118 128 L180 190 C185 195 195 195 200 190 L210 180 C215 175 215 165 210 160 L148 98 C160 75 157 43 140 20Z"/>
+  </g>
+</svg>
