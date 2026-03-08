@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+
+# Build
+dist/
+
+# TypeScript build artifacts
+*.tsbuildinfo
+*.d.ts
+*.d.ts.map
+!src/vite-env.d.ts
+
+# Environment
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+
+# Testing
+coverage/
+test-results/
+playwright-report/
+
+# Vercel
+.vercel/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Screenshots
+screenshots/
+
+# Backups
+backups/
