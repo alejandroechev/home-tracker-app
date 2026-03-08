@@ -30,6 +30,7 @@ export default defineConfig({
     exclude: ['tests/e2e/**', 'node_modules/**'],
     coverage: {
       include: ['src/domain/**', 'src/ui/**'],
+      exclude: ['**/*.d.ts', '**/*.d.ts.map', '**/index.ts'],
     },
   },
 });
