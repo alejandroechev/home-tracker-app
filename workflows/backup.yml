@@ -1,0 +1,72 @@
+name: Weekly DB Backup
+
+on:
+  schedule:
+    - cron: '0 3 * * 0' # Sunday 3:00 AM UTC — DB backup
+    - cron: '0 4 1 * *' # 1st of month 4:00 AM UTC — DB + file backup
+  workflow_dispatch: # Allow manual trigger
+    inputs:
+      include_files:
+        description: 'Include file backup (Supabase Storage)'
+        type: boolean
+        default: false
+
+jobs:
+  backup:
+    name: Export DB to backups branch
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run DB backup script
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: npx tsx scripts/backup-db.ts
+
+      - name: Run file backup (monthly or manual)
+        if: github.event.schedule == '0 4 1 * *' || github.event.inputs.include_files == 'true'
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: npx tsx scripts/backup-files.ts
+
+      - name: Save backup data
+        run: |
+          DATE=$(date +%Y-%m-%d)
+          mkdir -p /tmp/backup-data
+          cp -r backups/$DATE /tmp/backup-data/
+
+      - name: Switch to backups branch
+        run: |
+          rm -rf backups
+          git fetch origin backups 2>/dev/null || true
+          if git rev-parse --verify origin/backups >/dev/null 2>&1; then
+            git checkout -- . 2>/dev/null || true
+            git checkout backups
+          else
+            git checkout --orphan backups
+            git reset --hard
+            git clean -fd
+          fi
+
+      - name: Copy backup files and commit
+        run: |
+          DATE=$(date +%Y-%m-%d)
+          mkdir -p "$DATE"
+          cp -r /tmp/backup-data/$DATE/* "$DATE"/
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add "$DATE"
+          git commit -m "backup: DB export $DATE" || echo "No changes to commit"
+          git push origin backups || git push --set-upstream origin backups
