@@ -46,7 +46,7 @@ test.describe('HomeTracker App', () => {
     await page.getByPlaceholder('Detalles adicionales...').fill('Test');
 
     // Create a new area "Cocina" via the area select
-    const areaSelect = page.locator('select').nth(2); // 3rd select: Tipo, Prioridad... actually let's find by label
+    // Create a new area "Cocina" via the area select
     // The area select shows "Seleccionar área..." as default
     await page.getByText('Seleccionar área...').locator('..').selectOption('__create__');
     await page.getByPlaceholder('Nombre del área').fill('Cocina');
